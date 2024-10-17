@@ -7,7 +7,7 @@ import 'package:iconify_flutter/icons/mdi.dart';
 import 'package:iconify_flutter/icons/fa.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -34,15 +34,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     },
     {
       'icon': Iconify(Mdi.gold, color: Colors.orange[400], size: 42),
-      'title': 'gold_price',
+      'title': 'commodity_price',
       'backgroundColor': Colors.orange[100]!,
       'fontColor': Colors.yellow[900]!,
-    },
-    {
-      'icon': Iconify(IconParkSolid.oil_industry, color: Colors.brown[400], size: 42),
-      'title': 'oil_price',
-      'backgroundColor': Colors.brown[100]!,
-      'fontColor': Colors.brown[800]!,
     },
   ];
 
@@ -93,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Welcome back, Lily!'),
+        title: const Text('Welcome back!'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -116,15 +110,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Category', style: TextStyle(fontWeight: FontWeight.bold)),
-            TextButton(onPressed: () {}, child: Text('See all')),
+            const Text('Category', style: TextStyle(fontWeight: FontWeight.bold)),
+            TextButton(onPressed: () {}, child: const Text('See all')),
           ],
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         GridView.builder(
           shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             mainAxisSpacing: 20,
             crossAxisSpacing: 20,
@@ -160,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: color,
-        padding: EdgeInsets.all(5),
+        padding: const EdgeInsets.all(5),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
@@ -171,10 +165,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             context.push('/banking_products');
           case 'exchange_rate':
             context.push('/exchange_rate_list');
-          // case 'gold_price':
-          //   context.go('/gold_price'); // 예시: 금 가격 페이지로 이동
-          // case 'oil_price':
-          //   context.go('/oil_price'); // 예시: 석유 가격 페이지로 이동
+          case 'commodity_price':
+            context.push('/finance_commodity');
           default:
             // 기본 동작 또는 에러 처리
             print('Unknown category: $title');
@@ -184,7 +176,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           icon,
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(title, style: TextStyle(fontSize: 16, color: fontColor, fontWeight: FontWeight.w600)),
         ],
       ),

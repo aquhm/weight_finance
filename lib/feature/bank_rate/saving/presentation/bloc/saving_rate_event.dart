@@ -1,30 +1,3 @@
-// part of 'saving_rate_bloc.dart';
-//
-// @immutable
-// sealed class SavingRateEvent {}
-//
-// class InitializeSavingRateEvent extends SavingRateEvent {
-//   final List<SavingProductEntity> products;
-//
-//   InitializeSavingRateEvent(this.products);
-// }
-//
-// class LoadMoreSavingRatesEvent extends SavingRateEvent {}
-//
-// class SearchSavingRatesEvent extends SavingRateEvent {
-//   final String query;
-//
-//   SearchSavingRatesEvent(this.query);
-// }
-//
-// class SelectSavingRateEvent extends SavingRateEvent {
-//   final SavingProductEntity selectedProduct;
-//
-//   SelectSavingRateEvent(this.selectedProduct);
-// }
-//
-// class RestorePreviousStateEvent extends SavingRateEvent {}
-
 part of 'saving_rate_bloc.dart';
 
 sealed class SavingRateEvent extends FinancialProductEvent {}

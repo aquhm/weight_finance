@@ -8,6 +8,7 @@ import 'package:weight_finance/feature/bank_rate/saving/presentation/pages/savin
 import 'package:weight_finance/feature/bank_rate/saving/presentation/pages/saving_rate_screen.dart';
 import 'package:weight_finance/feature/exchange/presentation/pages/exchange_rate_screen.dart';
 import 'package:weight_finance/feature/bank_rate/deposit/presentation/pages/deposit_rate_detail_screen.dart';
+import 'package:weight_finance/feature/metal_price/presentation/pages/commodity_price_screen.dart';
 import 'package:weight_finance/views/onboarding/onboarding_screen.dart';
 import 'package:weight_finance/views/splash/splash_screen.dart';
 import 'package:weight_finance/views/home/home_screen.dart';
@@ -82,6 +83,10 @@ class AppPages {
           final product = state.extra as SavingProductEntity?;
           return SavingRatesDetailScreen(product: product!);
         },
+      ),
+      GoRoute(
+        path: '/finance_commodity',
+        builder: (context, state) => CommodityPricesScreen(),
       ),
     ],
   );

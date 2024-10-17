@@ -20,6 +20,12 @@ import 'package:weight_finance/feature/exchange/data/repositories/exchange_rate_
 import 'package:weight_finance/feature/exchange/domain/repositories/abstract_exchange_rate_repository.dart';
 import 'package:weight_finance/feature/exchange/domain/use_cases/exchange_rate_usecase.dart';
 import 'package:weight_finance/feature/exchange/presentation/bloc/exchange_rate_bloc.dart';
+import 'package:weight_finance/feature/metal_price/data/data_sources/remote/abstract_commodity_price_api.dart';
+import 'package:weight_finance/feature/metal_price/data/data_sources/remote/commodity_price_api.dart';
+import 'package:weight_finance/feature/metal_price/data/repositories/commodity_prices_repository.dart';
+import 'package:weight_finance/feature/metal_price/domain/repositories/abstract_commodity_prices_repository.dart';
+import 'package:weight_finance/feature/metal_price/domain/use_cases/get_commodity_prices.dart';
+import 'package:weight_finance/feature/metal_price/presentation/bloc/commodity_price_bloc.dart';
 import 'package:weight_finance/feature/theme/theme_bloc.dart';
 
 import 'package:weight_finance/feature/bank_rate/deposit/domain/use_cases/get_financial_deposit_products.dart';
@@ -43,14 +49,16 @@ class DependencyInjector {
       ..registerLazySingleton<ICompanyApi>(() => CompanyApiImpl(dioClient: _getIt()))
       ..registerLazySingleton<IFinancialDepositRateApi>(() => FinancialDepositRateImpl(dioClient: _getIt()))
       ..registerLazySingleton<IFinancialSavingRateApi>(() => FinancialSavingRateImpl(dioClient: _getIt()))
-      ..registerLazySingleton<IExchangeRateApi>(() => ExchangeRateApiImpl(dioClient: _getIt()));
+      ..registerLazySingleton<IExchangeRateApi>(() => ExchangeRateApiImpl(dioClient: _getIt()))
+      ..registerLazySingleton<ICommodityPricesApi>(() => CommodityPricesApiImpl(dioClient: _getIt()));
 
     // Repositories
     _getIt
       ..registerLazySingleton<ICompanyRepository>(() => CompanyRepositoryImpl(companyApi: _getIt()))
       ..registerLazySingleton<IFinancialRepository>(() => FinancialDepositRepositoryImpl(financialDepositRateApi: _getIt()), instanceName: 'deposit')
       ..registerLazySingleton<IFinancialRepository>(() => FinancialSavingRepositoryImpl(financialSavingRateApi: _getIt()), instanceName: 'saving')
-      ..registerLazySingleton<IExchangeRateRepository>(() => ExchangeRateRepositoryImpl(exchangeRateApi: _getIt()));
+      ..registerLazySingleton<IExchangeRateRepository>(() => ExchangeRateRepositoryImpl(exchangeRateApi: _getIt()))
+      ..registerLazySingleton<ICommodityPricesRepository>(() => CommodityPricesRepositoryImpl(commodityPricesApi: _getIt()));
 
     // ---------------------------------------------------------------------------
     // DOMAIN Layer
@@ -62,7 +70,8 @@ class DependencyInjector {
       ..registerLazySingleton<GetFinancialDepositProductsUseCase>(
           () => GetFinancialDepositProductsUseCase(repository: _getIt(instanceName: 'deposit')))
       ..registerLazySingleton<GetFinancialSavingProductsUseCase>(() => GetFinancialSavingProductsUseCase(repository: _getIt(instanceName: 'saving')))
-      ..registerLazySingleton<ExchangeRateUseCase>(() => ExchangeRateUseCase(repository: _getIt()));
+      ..registerLazySingleton<ExchangeRateUseCase>(() => ExchangeRateUseCase(repository: _getIt()))
+      ..registerLazySingleton<GetCommodityPricesUseCase>(() => GetCommodityPricesUseCase(repository: _getIt()));
 
     // ---------------------------------------------------------------------------
     // PRESENTATION Layer
@@ -71,19 +80,20 @@ class DependencyInjector {
     // Bloc
 
     // GlobalFinancialBloc
-    GlobalAPI.logger.d("==========> GlobalFinancialBloc 생성자 DependencyInjector");
     _getIt.registerLazySingleton<GlobalFinancialBloc>(() => GlobalFinancialBloc(
           useCases: {
-            FinancialProductType.deposit: _getIt<GetFinancialDepositProductsUseCase>(),
-            FinancialProductType.saving: _getIt<GetFinancialSavingProductsUseCase>(),
-            FinancialProductType.company: _getIt<GetCompaniesUseCase>(),
+            // FinancialProductType.deposit: _getIt<GetFinancialDepositProductsUseCase>(),
+            // FinancialProductType.saving: _getIt<GetFinancialSavingProductsUseCase>(),
+            // FinancialProductType.company: _getIt<GetCompaniesUseCase>(),
+            FinancialProductType.commodity: _getIt<GetCommodityPricesUseCase>(),
           },
         ));
 
     _getIt
-      ..registerFactory(() => ExchangeRateBloc(exchangeRateUseCase: _getIt()))
-      ..registerFactory(() => DepositRateBloc(globalFinancialBloc: _getIt()))
-      ..registerFactory(() => SavingRateBloc(globalFinancialBloc: _getIt()));
+      // ..registerFactory(() => ExchangeRateBloc(exchangeRateUseCase: _getIt()))
+      // ..registerFactory(() => DepositRateBloc(globalFinancialBloc: _getIt()))
+      // ..registerFactory(() => SavingRateBloc(globalFinancialBloc: _getIt()))
+      ..registerFactory(() => CommodityPricesBloc(getCommodityPricesUseCase: _getIt()));
 
     // Repositories
 
@@ -93,9 +103,10 @@ class DependencyInjector {
   void prepare() {
     var globalBloc = get<GlobalFinancialBloc>();
     globalBloc
-      ..add(const LoadFinancialData(FinancialProductType.company))
-      ..add(const LoadFinancialData(FinancialProductType.deposit))
-      ..add(const LoadFinancialData(FinancialProductType.saving));
+      // ..add(const LoadFinancialData(FinancialProductType.company))
+      // ..add(const LoadFinancialData(FinancialProductType.deposit))
+      // ..add(const LoadFinancialData(FinancialProductType.saving))
+      ..add(const LoadFinancialData(FinancialProductType.commodity));
   }
 
   T get<T extends Object>() => _getIt<T>();

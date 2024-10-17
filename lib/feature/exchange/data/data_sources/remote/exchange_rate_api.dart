@@ -20,6 +20,7 @@ class ExchangeRateApiImpl implements IExchangeRateApi {
       final response = await dioClient.get(
         BASE_URL,
       );
+
       if (response.statusCode == 200) {
         final List<dynamic> data = response.data;
         if (data.isNotEmpty && data[0]['result'] == 1) {

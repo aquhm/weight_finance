@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weight_finance/feature/theme/theme_bloc.dart';
 import 'package:weight_finance/global/bloc/global_financial/global_financial_bloc.dart';
 import 'package:weight_finance/global_api.dart';
-//import 'package:weight_finance/global/bloc/global_deposit/global_deposit_bloc.dart';
 
 class GlobalBlocProviders extends StatelessWidget {
   final Widget child;

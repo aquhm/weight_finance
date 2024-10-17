@@ -4,6 +4,7 @@ enum FinancialProductType {
   deposit,
   company,
   saving,
+  commodity,
 }
 
 sealed class GlobalFinancialEvent {
