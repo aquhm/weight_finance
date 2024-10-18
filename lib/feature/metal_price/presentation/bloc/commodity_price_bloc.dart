@@ -8,6 +8,8 @@ part 'commodity_price_event.dart';
 part 'commodity_price_state.dart';
 
 class CommodityPricesBloc extends Bloc<CommodityPriceEvent, CommodityPriceState> {
+  late String currency;
+  late String unit;
   final GetCommodityPricesUseCase getCommodityPricesUseCase;
 
   CommodityPricesBloc({required this.getCommodityPricesUseCase}) : super(CommodityPricesInitial()) {
@@ -33,6 +35,7 @@ class CommodityPricesBloc extends Bloc<CommodityPriceEvent, CommodityPriceState>
   }
 
   void _onChangeUnit(ChangeUnit event, Emitter<CommodityPriceState> emit) {
+    unit = event.unit;
     if (state is CommodityPricesLoaded) {
       final currentState = state as CommodityPricesLoaded;
       emit(currentState.copyWith(unit: event.unit));

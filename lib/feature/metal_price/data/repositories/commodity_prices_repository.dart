@@ -22,7 +22,6 @@ class CommodityPricesRepositoryImpl implements ICommodityPricesRepository {
         return result.fold(
           (failure) => Left(failure),
           (dto) {
-            GlobalAPI.logger.d("=============> CommodityPricesRepositoryImpl");
             final entity = dto.toEntity();
             _financialDataManager.commodityPrices = entity;
             return Right(entity);

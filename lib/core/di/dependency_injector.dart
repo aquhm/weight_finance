@@ -31,7 +31,6 @@ import 'package:weight_finance/feature/theme/theme_bloc.dart';
 import 'package:weight_finance/feature/bank_rate/deposit/domain/use_cases/get_financial_deposit_products.dart';
 import 'package:weight_finance/feature/bank_rate/deposit/presentation/bloc/deposit_rate_bloc.dart';
 import 'package:weight_finance/global/bloc/global_financial/global_financial_bloc.dart';
-import 'package:weight_finance/global_api.dart';
 
 class DependencyInjector {
   final GetIt _getIt = GetIt.instance;
@@ -82,17 +81,17 @@ class DependencyInjector {
     // GlobalFinancialBloc
     _getIt.registerLazySingleton<GlobalFinancialBloc>(() => GlobalFinancialBloc(
           useCases: {
-            // FinancialProductType.deposit: _getIt<GetFinancialDepositProductsUseCase>(),
-            // FinancialProductType.saving: _getIt<GetFinancialSavingProductsUseCase>(),
-            // FinancialProductType.company: _getIt<GetCompaniesUseCase>(),
+            FinancialProductType.deposit: _getIt<GetFinancialDepositProductsUseCase>(),
+            FinancialProductType.saving: _getIt<GetFinancialSavingProductsUseCase>(),
+            FinancialProductType.company: _getIt<GetCompaniesUseCase>(),
             FinancialProductType.commodity: _getIt<GetCommodityPricesUseCase>(),
           },
         ));
 
     _getIt
-      // ..registerFactory(() => ExchangeRateBloc(exchangeRateUseCase: _getIt()))
-      // ..registerFactory(() => DepositRateBloc(globalFinancialBloc: _getIt()))
-      // ..registerFactory(() => SavingRateBloc(globalFinancialBloc: _getIt()))
+      ..registerFactory(() => ExchangeRateBloc(exchangeRateUseCase: _getIt()))
+      ..registerFactory(() => DepositRateBloc(globalFinancialBloc: _getIt()))
+      ..registerFactory(() => SavingRateBloc(globalFinancialBloc: _getIt()))
       ..registerFactory(() => CommodityPricesBloc(getCommodityPricesUseCase: _getIt()));
 
     // Repositories
@@ -103,9 +102,9 @@ class DependencyInjector {
   void prepare() {
     var globalBloc = get<GlobalFinancialBloc>();
     globalBloc
-      // ..add(const LoadFinancialData(FinancialProductType.company))
-      // ..add(const LoadFinancialData(FinancialProductType.deposit))
-      // ..add(const LoadFinancialData(FinancialProductType.saving))
+      ..add(const LoadFinancialData(FinancialProductType.company))
+      ..add(const LoadFinancialData(FinancialProductType.deposit))
+      ..add(const LoadFinancialData(FinancialProductType.saving))
       ..add(const LoadFinancialData(FinancialProductType.commodity));
   }
 
